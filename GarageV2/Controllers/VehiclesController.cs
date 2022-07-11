@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace GarageV2.Controllers
 {
 
-
     public class VehiclesController : Controller
     {
         private readonly GarageDBContext _context;
@@ -151,5 +150,10 @@ namespace GarageV2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        private bool VehicleExists(string id)
+        {
+            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
+        }
     }
 }

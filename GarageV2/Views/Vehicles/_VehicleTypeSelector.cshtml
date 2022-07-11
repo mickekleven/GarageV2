@@ -2,12 +2,24 @@
 @using static GarageV2.Utilities.Enums
 
 
+@{
+    var vid = "vitype";
+    var a = 0;
+}
+
 <div class="col-md-4">
     <select class="form-select form-select-sm" onchange="vehicleTypeFunc(this.value);">
-    @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
-    {
-        <option class="vitype" value="@ty">@ty</option>
-    }
-</select>
+        @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
+        {
+@*            var _vidty = $"{vid}{a}";
+
+            <option id="@_vidty" value="@ty">@ty</option>
+            a++;*@
+
+            <option class="vihtype" value="@ty">@ty</option>
+
+
+        }
+    </select>
 </div>
 
