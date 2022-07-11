@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GarageV2.Data;
+using GarageV2.Models.ViewModels;
 
 namespace GarageV2.Controllers
 {
@@ -19,12 +15,36 @@ namespace GarageV2.Controllers
         }
 
         // GET: Vehicles
+        //public async Task<IActionResult> Index()
+        //{
+        //      return _context.Vehicles != null ? 
+        //                  View(await _context.Vehicles.ToListAsync()) :
+        //                  Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
+        //}
+
+
+
+
         public async Task<IActionResult> Index()
         {
-              return _context.Vehicles != null ? 
-                          View(await _context.Vehicles.ToListAsync()) :
-                          Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
+            var viewModel = await _context.Vehicles.Select(e => new IndexViewModel
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime
+            }).ToListAsync();
+
+            return View(viewModel);
         }
+
+
+
+
+
+
+
+
+
 
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(string id)

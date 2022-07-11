@@ -1,28 +1,29 @@
-﻿@using GarageV2.Models.ViewModels
-@model IEnumerable<IndexViewModel>
+﻿@model IEnumerable<Vehicle>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Parkerade Fordon</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Parkera nytt fordon</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-
             <th>
                 @Html.DisplayNameFor(model => model.RegNr)
             </th>
-
             <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+             <th>
                 @Html.DisplayNameFor(model => model.VehicleType)
             </th>
-
-
             <th>
                 @Html.DisplayNameFor(model => model.ArrivalTime)
             </th>
@@ -32,22 +33,25 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-
             <td>
                 @Html.DisplayFor(modelItem => item.RegNr)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VehicleType)
             </td>
-            
             <td>
                 @Html.DisplayFor(modelItem => item.ArrivalTime)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RegNr">Ändra fordonsdetaljer</a> |
-                <a asp-action="Details" asp-route-id="@item.RegNr">Detaljer</a> |
-                <a asp-action="Delete" asp-route-id="@item.RegNr">Checka ut</a>
+                <a asp-action="Edit" asp-route-id="@item.RegNr">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RegNr">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RegNr">Delete</a>
             </td>
         </tr>
 }

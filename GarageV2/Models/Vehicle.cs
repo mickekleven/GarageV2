@@ -19,10 +19,10 @@ public class Vehicle
     public string Brand { get; set; }
 
     [Required]
-    public int Model { get; set; }
+    public string Model { get; set; }
 
     [Required]
-    public int VehicleType { get; set; }
+    public string VehicleType { get; set; }
     public DateTime ArrivalTime { get; set; } = DateTime.MinValue;
 
 }
