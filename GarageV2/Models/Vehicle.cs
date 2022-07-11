@@ -20,6 +20,9 @@ public class Vehicle
 
     [Required]
     public int Model { get; set; }
+
+    [Required]
+    public int VehicleType { get; set; }
     public DateTime ArrivalTime { get; set; } = DateTime.MinValue;
 
 }
