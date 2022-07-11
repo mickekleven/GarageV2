@@ -45,9 +45,10 @@ namespace GarageV2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VehicleType")
+                    b.Property<int>("VehicleType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("Wheels")
                         .HasColumnType("int");

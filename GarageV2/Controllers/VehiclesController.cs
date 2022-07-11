@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GarageV2.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GarageV2.Data;
-using GarageV2.Models.ViewModels;
 
 namespace GarageV2.Controllers
 {
+
     public class VehiclesController : Controller
     {
         private readonly GarageDBContext _context;
@@ -27,6 +27,9 @@ namespace GarageV2.Controllers
 
         public async Task<IActionResult> Index()
         {
+            return _context.Vehicles != null ?
+                        View(await _context.Vehicles.ToListAsync()) :
+                        Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
             var viewModel = await _context.Vehicles.Select(e => new IndexViewModel
             {
                 RegNr = e.RegNr.ToUpper(),
@@ -75,10 +78,11 @@ namespace GarageV2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("RegNr,Color,Wheels,Brand,Model,VehicleType")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
+                vehicle.ArrivalTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -169,14 +173,15 @@ namespace GarageV2.Controllers
             {
                 _context.Vehicles.Remove(vehicle);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool VehicleExists(string id)
         {
-          return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
+            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
         }
     }
 }

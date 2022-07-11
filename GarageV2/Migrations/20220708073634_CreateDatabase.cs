@@ -18,6 +18,7 @@ namespace GarageV2.Migrations
                     Wheels = table.Column<int>(type: "int", nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Model = table.Column<int>(type: "int", nullable: false),
+                    VehicleType = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
