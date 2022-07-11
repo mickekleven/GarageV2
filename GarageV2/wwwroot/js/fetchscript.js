@@ -13,8 +13,10 @@ const postOptions = {
 };
 
 
-const fetchData = function (vehicleObj) {
+const formObj = document.querySelector('#formid');
 
+
+const fetchData = function (vehicleObj) {
 
     let url = 'Vehicles/SetVehicleType?SetVehicleType';
 
