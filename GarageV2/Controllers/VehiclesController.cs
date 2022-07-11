@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GarageV2.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GarageV2.Data;
 
 namespace GarageV2.Controllers
 {
+
     public class VehiclesController : Controller
     {
         private readonly GarageDBContext _context;
@@ -21,9 +17,9 @@ namespace GarageV2.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-              return _context.Vehicles != null ? 
-                          View(await _context.Vehicles.ToListAsync()) :
-                          Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
+            return _context.Vehicles != null ?
+                        View(await _context.Vehicles.ToListAsync()) :
+                        Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
         }
 
         // GET: Vehicles/Details/5
@@ -150,14 +146,15 @@ namespace GarageV2.Controllers
             {
                 _context.Vehicles.Remove(vehicle);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool VehicleExists(string id)
         {
-          return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
+            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
         }
     }
 }
