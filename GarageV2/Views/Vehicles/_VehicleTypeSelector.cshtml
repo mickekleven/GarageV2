@@ -1,0 +1,18 @@
+﻿@using GarageV2.Utilities
+@using static GarageV2.Utilities.Enums
+
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Välj Typ
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+        @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
+        {
+            <li><a class="dropdown-item" href="#">@ty</a></li>
+        }
+  </ul>
+</div>
+
+
