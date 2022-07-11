@@ -9,6 +9,7 @@
 
 <div class="col-md-4">
     <select class="form-select form-select-sm" onchange="vehicleTypeFunc(this.value);">
+
         @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
         {
 @*            var _vidty = $"{vid}{a}";
