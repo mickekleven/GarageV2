@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -17,7 +16,7 @@ namespace GarageV2.Migrations
                     Color = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Wheels = table.Column<int>(type: "int", nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Model = table.Column<int>(type: "int", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     VehicleType = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
