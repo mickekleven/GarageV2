@@ -1,4 +1,5 @@
 ﻿using GarageV2.Data;
+using GarageV2.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,9 +28,7 @@ namespace GarageV2.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return _context.Vehicles != null ?
-                        View(await _context.Vehicles.ToListAsync()) :
-                        Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
+            
             var viewModel = await _context.Vehicles.Select(e => new IndexViewModel
             {
                 RegNr = e.RegNr.ToUpper(),
