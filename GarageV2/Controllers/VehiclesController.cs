@@ -177,10 +177,10 @@ namespace GarageV2.Controllers
             return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SetVehicleType(Vehicle vehicle)
+        [HttpGet]
+        public async Task<IActionResult> SetVehicleType(string vehicleType)
         {
-            return Json(vehicle);
+            return Json(vehicleType);
         }
 
     }

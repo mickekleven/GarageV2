@@ -1,6 +1,11 @@
 ﻿
-// Script handles fetch and construction of items for updating DOM. 
+// Script handles fetch and update of the DOM
 
+
+const vehiElement = document.querySelector('#vehicletypeid')
+const formElement = document.querySelector('#formid');
+
+const addUrl = 'SetVehicleType?vehicleType=';
 
 const getOptions = {
     'method': 'GET',
@@ -13,34 +18,28 @@ const postOptions = {
 };
 
 
-const formObj = document.querySelector('#formid');
+// Selected vehicle type is passed from view by onchange event.
+// The call is done to the controller action which returns a json to this promise
+// With insertAdjacentHTML data i add directly on element.This also means that only the data
+// is refreshed for on the page and not the whole page. 
+const fetchData = function (vehicleValue) {
 
-
-const fetchData = function (vehicleObj) {
-
-    let url = 'Vehicles/SetVehicleType?SetVehicleType';
+    let url = addUrl + vehicleValue ;
 
     try {
-        const response = fetch(url, postOptions)
+        const response = fetch(url, getOptions)
             .then(res => {
                 if (!res.ok) {
                     console.log('Not sucessful');
                 } else {
                     console.log('SUCCESS');
                     return res.json();
-
                 }
             })
             .then((data) => {
-                console.log('data ' + data);
-
-                items.innerHTML = ""; 
-
+                console.log('Fetch - Data ' + data);
+                vehiElement.innerHTML = ""; 
                 addItemToDom(data);
-
-                element.value = "";
-
-
             })
 
             .catch((error) => {
@@ -53,32 +52,21 @@ const fetchData = function (vehicleObj) {
     } catch (e) {
         console.error('Exception is thrown ' + e.message);
     }
-
 }
 
-const addItemToDom = function (_item) {
+//Add result to the DOM
+const addItemToDom = function (_vehicleData) {
 
-    items.insertAdjacentHTML('beforeend', `<tr>
-            <th>${_item.regNr}</th>
-            <th>${_item.color}</th>
-            <th>${_item.wheels}</th>
-            <th>${_item.brand}</th>
-            <th>${_item.model}</th>
-            <th>${_item.vehicleType}</th>
-            <th>${_item.arrivalDate}</th>
-        </tr>`);
+    let _item = new Item02(_vehicleData);
+    vehiElement.insertAdjacentHTML('beforebegin',
+        `<input hidden class="form-control" name="VehicleType" value="${_item.vehicleType}"/>`);
 }
 
-class Item {
-    constructor(regNr, color, wheels, brand, model, vehicleType, arrivalDate) {
-        this.regNr = regNr;
-        this.color = color;
-        this.wheels = wheels;
-        this.brand = brand;
-        this.model = model;
+
+// Class that reflects parts of the model in in the view.
+class Item02 {
+    constructor(vehicleType) {
         this.vehicleType = vehicleType;
-        this.arrivalDate = arrivalDate;
-
     }
 }
 

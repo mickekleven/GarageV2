@@ -5,24 +5,7 @@
 
 <div class="col-md-4">
 
-@*    <select class="form-select form-select-sm" name="selectedValue" onchange="vehicleTypeFunc(this.value);" id="selvehicletype">
-
-        @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
-        {
-            <option class="vihtype" value="@ty">@ty</option>
-        }
-    </select>*@
-
-
-
-@*    @Html.DropDownListFor(model => 
-        model.VehicleType, 
-        Enum.GetValues(typeof(VehicleType)),"key")
-)*@
-
-
-
-    <select class="form-select form-select-sm" name="selectedValue" onchange="vehicleTypeFunc(this.value);" id="selvehicletype">
+    <select class="form-select form-select-sm" name="selectedValue" onchange="fetchData(this.value);">
 
         @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
         {
