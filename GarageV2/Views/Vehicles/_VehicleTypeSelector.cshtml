@@ -1,25 +1,22 @@
-﻿@using GarageV2.Utilities
+﻿@model Vehicle
+@using GarageV2.Utilities
 @using static GarageV2.Utilities.Enums
 
 
-@{
-    var vid = "vitype";
-    var a = 0;
-}
-
 <div class="col-md-4">
-    <select class="form-select form-select-sm" onchange="vehicleTypeFunc(this.value);">
+
+@*    <select name="selectedValue" asp-for="VehicleType" asp-items="@(
+        new SelectList(Enum.GetValues(typeof(VehicleType)),"vehicleType"))" class="form-control">
+    </select>*@
+
+
+
+
+    <select class="form-select form-select-sm" name="selectedValue" onchange="vehicleTypeFunc(this.value);" id="selvehicletype">
 
         @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
         {
-@*            var _vidty = $"{vid}{a}";
-
-            <option id="@_vidty" value="@ty">@ty</option>
-            a++;*@
-
             <option class="vihtype" value="@ty">@ty</option>
-
-
         }
     </select>
 </div>

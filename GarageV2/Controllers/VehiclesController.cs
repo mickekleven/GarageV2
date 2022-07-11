@@ -176,5 +176,12 @@ namespace GarageV2.Controllers
         {
             return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetVehicleType(Vehicle vehicle)
+        {
+            return Json(vehicle);
+        }
+
     }
 }

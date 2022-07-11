@@ -2,9 +2,16 @@
 
 @{
     ViewData["Title"] = "Create";
+    ViewBag.VehicleType = "";
+
 }
 
 <h1>Create</h1>
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.VehicleType))
+{
+    Model.VehicleType = ViewBag.VehicleType;
+}
 
 
 <partial name="_VehicleTypeSelector"></partial>
@@ -40,11 +47,11 @@
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label asp-for="VehicleType" class="control-label"></label>
                 <input asp-for="VehicleType" class="form-control" />
                 <span asp-validation-for="VehicleType" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

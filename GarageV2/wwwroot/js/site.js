@@ -9,15 +9,15 @@ const vehicleTypeFunc = function (element) {
         
         if (target[i].value === element) {
 
-
-
             target[i].setAttribute('selected', true);
-
+            window.location.href = '/Vehicles/GetVehicleType?selectedValue=' + element;
 
         }
         
     }
 }
+
+
 
 
 
