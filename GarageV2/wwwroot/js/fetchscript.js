@@ -2,27 +2,24 @@
 // Script handles fetch and construction of items for updating DOM. 
 
 
-const items = document.querySelector('#proditembody');
-
-const btnfetch = document.querySelector('#btnfetch');
-btnfetch.addEventListener('click', function () {
-    fetchData();
-})
-
 const getOptions = {
     'method': 'GET',
     'Content-type': 'application/json'
 };
 
+const postOptions = {
+    'method': 'POST',
+    'Content-type': 'application/json'
+};
 
-const fetchData = function () {
 
-    let element = document.querySelector('#prodlist');
+const fetchData = function (vehicleObj) {
 
-    let url = 'Vehicles/FindByOptionJsFetch?findOption=' + element.value;
+
+    let url = 'Vehicles/SetVehicleType?SetVehicleType';
 
     try {
-        const response = fetch(url, getOptions)
+        const response = fetch(url, postOptions)
             .then(res => {
                 if (!res.ok) {
                     console.log('Not sucessful');
@@ -37,7 +34,7 @@ const fetchData = function () {
 
                 items.innerHTML = ""; 
 
-                data.forEach(i => addItemToDom(i));
+                addItemToDom(data);
 
                 element.value = "";
 

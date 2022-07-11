@@ -5,10 +5,20 @@
 
 <div class="col-md-4">
 
-@*    <select name="selectedValue" asp-for="VehicleType" asp-items="@(
-        new SelectList(Enum.GetValues(typeof(VehicleType)),"vehicleType"))" class="form-control">
+@*    <select class="form-select form-select-sm" name="selectedValue" onchange="vehicleTypeFunc(this.value);" id="selvehicletype">
+
+        @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
+        {
+            <option class="vihtype" value="@ty">@ty</option>
+        }
     </select>*@
 
+
+
+@*    @Html.DropDownListFor(model => 
+        model.VehicleType, 
+        Enum.GetValues(typeof(VehicleType)),"key")
+)*@
 
 
 
@@ -19,5 +29,6 @@
             <option class="vihtype" value="@ty">@ty</option>
         }
     </select>
+
 </div>
 

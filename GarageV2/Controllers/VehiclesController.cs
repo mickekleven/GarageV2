@@ -178,7 +178,7 @@ namespace GarageV2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetVehicleType(Vehicle vehicle)
+        public async Task<IActionResult> SetVehicleType(Vehicle vehicle)
         {
             return Json(vehicle);
         }
