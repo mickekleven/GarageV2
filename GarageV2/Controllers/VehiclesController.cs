@@ -151,9 +151,5 @@ namespace GarageV2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleExists(string id)
-        {
-            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
-        }
     }
 }
