@@ -1,29 +1,16 @@
 ﻿@model VehicleViewModel
 
-@{
-    ViewData["Title"] = "Create";
-    ViewBag.VehicleType = "";
-
-}
-
-
-@*@if (!Model.isSuccess)
-{
-    
-}*@
-
-@*<partial name="_InfoPopup"></partial>*@
-
 
 <h1>Create</h1>
 
-@if (!string.IsNullOrWhiteSpace(ViewBag.VehicleType))
+
+@if (Model is not null && !string.IsNullOrEmpty(Model.UserMessage))
 {
-    Model.VehicleType = ViewBag.VehicleType;
+   <partial name="_InfoPopup"></partial>
 }
 
-
 <partial name="_VehicleTypeSelector"></partial>
+
 
 <h4>Vehicle</h4>
 <hr />

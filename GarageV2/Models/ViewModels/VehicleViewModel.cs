@@ -38,7 +38,7 @@
         /// <summary>
         /// HeadLine
         /// </summary>
-        public string headLine { get; set; }
+        public string HeadLine { get; set; }
 
         /// <summary>
         /// Message shown to the parking user - CRUD operations

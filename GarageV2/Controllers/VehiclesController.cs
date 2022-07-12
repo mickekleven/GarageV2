@@ -56,24 +56,29 @@ namespace GarageV2.Controllers
         {
             if (!ModelState.IsValid)
             {
-
+                return View();
             }
+
+            var model = CastItem(vehicle);
 
             var isExist = await GetVehicle(vehicle.RegNr);
             if (isExist is not null)
             {
 
-
-                //return View(IndexViewModel);
+                model.HeadLine = "Meddelande";
+                model.UserMessage = $"Angivet registeringsnummer {model.RegNr} existerar redan vilket måste vara unikt";
+                return View(model);
+            }
+            else
+            {
+                vehicle.ArrivalTime = DateTime.Now;
+                _context.Add(vehicle);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
             }
 
-            vehicle.ArrivalTime = DateTime.Now;
-            _context.Add(vehicle);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
 
-
-            return View(vehicle);
+            return View(model);
         }
 
         // GET: Vehicles/Edit/5
@@ -182,7 +187,7 @@ namespace GarageV2.Controllers
             {
                 RegNr = e.RegNr.ToUpper(),
                 VehicleType = e.VehicleType.ToUpper(),
-                ArrivalTime = e.ArrivalTime
+                ArrivalTime = e.ArrivalTime,
             }).ToListAsync();
         }
 
@@ -190,7 +195,7 @@ namespace GarageV2.Controllers
         {
             var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
                 i.RegNr.ToLower().Equals(id.ToLower()));
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }
@@ -203,10 +208,29 @@ namespace GarageV2.Controllers
                 Model = result.Model,
                 Brand = result.Brand,
                 Color = result.Color,
-                Wheels = result.Wheels               
+                Wheels = result.Wheels
 
             };
         }
 
+
+        public IActionResult setPopupFlag(VehicleViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private VehicleViewModel CastItem(Vehicle _vehicle)
+        {
+            return new VehicleViewModel
+            {
+                Brand = _vehicle.Brand,
+                Color = _vehicle.Color,
+                Model = _vehicle.Model,
+                RegNr = _vehicle.RegNr,
+                VehicleType = _vehicle.VehicleType,
+                Wheels = _vehicle.Wheels
+            };
+        }
     }
 }
