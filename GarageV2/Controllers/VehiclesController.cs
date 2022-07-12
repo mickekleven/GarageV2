@@ -56,6 +56,8 @@ namespace GarageV2.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewData["HeadLine"] = "Meddelande";
+                ViewData["UserMessage"] = $"Fyll i/välj samtliga värden i formuläret";
                 return View();
             }
 
@@ -63,11 +65,9 @@ namespace GarageV2.Controllers
             var isExist = await GetVehicle(vehicle.RegNr);
             if (isExist is not null)
             {
-
                 ViewData["HeadLine"] = "Meddelande";
                 ViewData["UserMessage"] = $"Angivet registeringsnummer {vehicle.RegNr} existerar redan vilket måste vara unikt";
                 return View();
-
             }
 
             vehicle.ArrivalTime = DateTime.Now;

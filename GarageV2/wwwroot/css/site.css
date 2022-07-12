@@ -33,8 +33,8 @@ body {
     border: 2px solid #CCC;
     border-radius: 10px;
     background-image: url("/images/popup-bg.webp");
-    background-size:100%;
-
+    background-size: 100%;
+    box-shadow: 5px 10px 10px gray; 
 }
 
     .popup-inner img {
