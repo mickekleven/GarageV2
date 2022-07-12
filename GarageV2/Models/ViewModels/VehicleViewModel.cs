@@ -1,16 +1,30 @@
 ﻿namespace GarageV2.Models.ViewModels
 {
 
+    using System.ComponentModel.DataAnnotations;
+
 #nullable disable
     public class VehicleViewModel
     {
+        [Key]
+        [StringLength(10)]
+        [Display(Name = "Registrerings nummer")]
         public string RegNr { get; set; }
-        public string Color { get; set; }
-        public int Wheels { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
+
+
+        [Display(Name = "Fordonstyp")]
         public string VehicleType { get; set; }
-        public DateTime ArrivalTime { get; set; } = DateTime.MinValue;
+
+
+        [Display(Name = "Parkeringsdatum")]
+        [DataType(DataType.Date)]
+        public DateTime ArrivalTime { get; init; }
+
+
+        /// <summary>
+        /// HeadLine
+        /// </summary>
+        public string headLine { get; set; }
 
         /// <summary>
         /// Message shown to the parking user - CRUD operations
