@@ -16,3 +16,50 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
+.popup-main {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: transparent;
+    z-index: 99;
+}
+
+.popup-inner {
+    width: 30rem;
+    padding: 10px;
+    border: 2px solid #CCC;
+    border-radius: 10px;
+    background-image: url("/images/popup-bg.webp");
+    background-size:100%;
+
+}
+
+    .popup-inner img {
+
+        object-fit: cover;
+        width:600px;
+
+        height:600px;
+    }
+
+    .popup-body, .popup-footer {
+        width: 100%;
+        padding: 30px;
+    }
+
+.popup-footer {
+    display:flex;
+    flex-direction:row;
+}
+
+.popup-footer_ch1, .popup-footer_ch2 {
+
+    flex:0 1 49%;
+}
+
+
+
+

@@ -15,29 +15,9 @@ namespace GarageV2.Controllers
             _context = context;
         }
 
-        // GET: Vehicles
-        //public async Task<IActionResult> Index()
-        //{
-        //      return _context.Vehicles != null ? 
-        //                  View(await _context.Vehicles.ToListAsync()) :
-        //                  Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-        //}
-
-
-
-
         public async Task<IActionResult> Index()
         {
-            //return _context.Vehicles != null ?
-            //            View(await _context.Vehicles.ToListAsync()) :
-            //            Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-            var viewModel = await _context.Vehicles.Select(e => new IndexViewModel
-            {
-                RegNr = e.RegNr.ToUpper(),
-                VehicleType = e.VehicleType.ToUpper(),
-                ArrivalTime = e.ArrivalTime
-            }).ToListAsync();
-
+            var viewModel = await GetVehicles().ConfigureAwait(false);
             return View(viewModel);
         }
 
@@ -50,8 +30,9 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.RegNr == id);
+
+
+            var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
                 return NotFound();
@@ -61,7 +42,7 @@ namespace GarageV2.Controllers
         }
 
         // GET: Vehicles/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -73,13 +54,26 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RegNr,Color,Wheels,Brand,Model,VehicleType")] Vehicle vehicle)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                vehicle.ArrivalTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
             }
+
+            var isExist = await GetVehicle(vehicle.RegNr);
+            if (isExist is not null)
+            {
+
+
+                //return View(IndexViewModel);
+            }
+
+
+
+            vehicle.ArrivalTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
+            _context.Add(vehicle);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
             return View(vehicle);
         }
 
@@ -181,6 +175,30 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> SetVehicleType(string vehicleType)
         {
             return Json(vehicleType);
+        }
+
+        private async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        {
+            return await _context.Vehicles.Select(e => new VehicleViewModel
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime
+            }).ToListAsync();
+        }
+
+        private async Task<VehicleViewModel> GetVehicle(string id)
+        {
+            var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
+                i.RegNr.Equals(id, StringComparison.OrdinalIgnoreCase));
+
+            return new VehicleViewModel
+            {
+                ArrivalTime = result.ArrivalTime,
+                RegNr = result.RegNr,
+                VehicleType = result.VehicleType
+
+            };
         }
 
     }
