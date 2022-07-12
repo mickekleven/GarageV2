@@ -5,7 +5,7 @@
 
 @if (ViewData["UserMessage"] is not null)
 {
-    <div class="row" id="popup-er">
+    <div class="row" id="popuper">
         <div class="col-md-12">
             <div class="popup-main">
                 <div class="popup-inner">
@@ -25,11 +25,7 @@
                     <div class="popup-footer">
 
                         <div class="popup-footer_ch1">
-                            <button class="btn btn-outline-primary">OK</button>
-                        </div>
-
-                        <div class="popup-footer_ch2">
-                            <button class="btn btn-outline-primary">OK</button>
+                            <button id="btnpopuper" class="btn btn-outline-primary">OK</button>
                         </div>
                     </div>
                 </div>
@@ -38,7 +34,21 @@
     </div>
 }
 
+<script>
 
+const popuper = document.querySelector('#popuper'); 
+popuper.addEventListener('change', function() {
+    popuper.style.display = 'block'; 
+}); 
+
+const btnpopuper = document.querySelector('#btnpopuper');
+btnpopuper.addEventListener('click', function() {
+    popuper.style.display = 'none'; 
+}); 
+
+
+
+</script>
 
 
 
