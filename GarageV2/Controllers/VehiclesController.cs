@@ -75,10 +75,10 @@ namespace GarageV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                vehicle.ArrivalTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
+                vehicle.ArrivalTime = DateTime.Now;
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr});
             }
             return View(vehicle);
         }
