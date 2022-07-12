@@ -20,6 +20,20 @@
         [DataType(DataType.Date)]
         public DateTime ArrivalTime { get; init; }
 
+        [Display(Name = "Färg")]
+        public string Color { get; set; }
+
+        [Display(Name = "Antal hjul")]
+        public int Wheels { get; set; }
+
+        [Display(Name = "Märke")]
+        public string Brand { get; set; }
+
+        [Display(Name = "Modell")]
+        public string Model { get; set; }
+
+
+
 
         /// <summary>
         /// HeadLine

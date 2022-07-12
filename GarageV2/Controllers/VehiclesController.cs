@@ -15,17 +15,6 @@ namespace GarageV2.Controllers
             _context = context;
         }
 
-        // GET: Vehicles
-        //public async Task<IActionResult> Index()
-        //{
-        //      return _context.Vehicles != null ? 
-        //                  View(await _context.Vehicles.ToListAsync()) :
-        //                  Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-        //}
-
-
-
-
         public async Task<IActionResult> Index()
         {
             var viewModel = await GetVehicles().ConfigureAwait(false);
@@ -41,8 +30,9 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.RegNr == id);
+
+
+            var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
                 return NotFound();
@@ -52,7 +42,7 @@ namespace GarageV2.Controllers
         }
 
         // GET: Vehicles/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -72,6 +62,8 @@ namespace GarageV2.Controllers
             var isExist = await GetVehicle(vehicle.RegNr);
             if (isExist is not null)
             {
+
+
                 //return View(IndexViewModel);
             }
 
