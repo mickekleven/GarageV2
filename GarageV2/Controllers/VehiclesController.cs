@@ -67,8 +67,6 @@ namespace GarageV2.Controllers
                 //return View(IndexViewModel);
             }
 
-
-
             vehicle.ArrivalTime = DateTime.Now;
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
@@ -191,13 +189,21 @@ namespace GarageV2.Controllers
         private async Task<VehicleViewModel> GetVehicle(string id)
         {
             var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
-                i.RegNr.Equals(id, StringComparison.OrdinalIgnoreCase));
+                i.RegNr.ToLower().Equals(id.ToLower()));
+            if(result == null)
+            {
+                return null;
+            }
 
             return new VehicleViewModel
             {
                 ArrivalTime = result.ArrivalTime,
                 RegNr = result.RegNr,
-                VehicleType = result.VehicleType
+                VehicleType = result.VehicleType,
+                Model = result.Model,
+                Brand = result.Brand,
+                Color = result.Color,
+                Wheels = result.Wheels               
 
             };
         }
