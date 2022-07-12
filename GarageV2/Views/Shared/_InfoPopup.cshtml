@@ -2,57 +2,44 @@
 
 
 
-@if (Model is not null)
+
+@if (ViewData["UserMessage"] is not null)
 {
-    <div class="row">
-    <div class="col-md-12">
-        <div class="popup-main">
-            <div class="popup-inner">
-                <div class="popup-body bg-light">
+    <div class="row" id="popup-er">
+        <div class="col-md-12">
+            <div class="popup-main">
+                <div class="popup-inner">
+                    <div class="popup-body bg-light">
 
-                    @if (!string.IsNullOrEmpty(Model.HeadLine))
-                    {
-                        <h2>@Model.HeadLine</h2>
-                    }
+                        <h2>MEDDELANDE @DateTime.Now.ToString("hh:mm")</h2>
 
-                    @if (!string.IsNullOrEmpty(Model.UserMessage))
-                    {
-                        <h2>@Model.UserMessage</h2>
-                    }
+                        @if (ViewData["UserMessage"] is not null)
+                        {
+                            <p>@ViewData["UserMessage"]</p>
+                        }
 
 
-                    <p>Detta är paragraph texten</p>
-
-                    <form asp-action="setPopupFlag">
-                        <input hidden asp-for="RegNr" />
-                        <input hidden asp-for="VehicleType" />
-                        <input hidden asp-for="Color" />
-                        <input hidden asp-for="ArrivalTime" />
-                        <input hidden asp-for="Wheels" />
-                        <input hidden asp-for="Brand" />
-                        <input hidden asp-for="Model" />
-                        <input hidden asp-for="HeadLine" />
-                        <input hidden asp-for="UserMessage" />
-                        <input hidden asp-for="IsSucceed" />
-                        <button type="button" class="btn btn-primary">OK</button>
-                    </form>
-                </div>
-
-                <div class="popup-footer">
-
-                    <div class="popup-footer_ch1">
-                        <button class="btn btn-outline-primary">OK</button>
+                        <p>Detta är paragraph texten</p>
                     </div>
 
-                    <div class="popup-footer_ch2">
-                        <button class="btn btn-outline-primary">OK</button>
+                    <div class="popup-footer">
+
+                        <div class="popup-footer_ch1">
+                            <button class="btn btn-outline-primary">OK</button>
+                        </div>
+
+                        <div class="popup-footer_ch2">
+                            <button class="btn btn-outline-primary">OK</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 }
+
+
+
 
 
 

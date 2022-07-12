@@ -59,26 +59,23 @@ namespace GarageV2.Controllers
                 return View();
             }
 
-            var model = CastItem(vehicle);
 
             var isExist = await GetVehicle(vehicle.RegNr);
             if (isExist is not null)
             {
 
-                model.HeadLine = "Meddelande";
-                model.UserMessage = $"Angivet registeringsnummer {model.RegNr} existerar redan vilket måste vara unikt";
-                return View(model);
-            }
-            else
-            {
-                vehicle.ArrivalTime = DateTime.Now;
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
+                ViewData["HeadLine"] = "Meddelande";
+                ViewData["UserMessage"] = $"Angivet registeringsnummer {vehicle.RegNr} existerar redan vilket måste vara unikt";
+                return View();
+
             }
 
+            vehicle.ArrivalTime = DateTime.Now;
+            _context.Add(vehicle);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
 
-            return View(model);
+
         }
 
         // GET: Vehicles/Edit/5
@@ -89,11 +86,12 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await GetVehicleModel(id);
             if (vehicle == null)
             {
                 return NotFound();
             }
+
             return View(vehicle);
         }
 
@@ -102,7 +100,7 @@ namespace GarageV2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime, VehicleType")] Vehicle vehicle)
         {
             if (id != vehicle.RegNr)
             {
@@ -214,6 +212,17 @@ namespace GarageV2.Controllers
         }
 
 
+        /// <summary>
+        /// Gets Vehicle pure viehicle model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<Vehicle?> GetVehicleModel(string id) =>
+                            await _context.Vehicles.FirstOrDefaultAsync(i =>
+                                    i.RegNr.ToLower().Equals(id.ToLower()));
+
+
+
         public IActionResult setPopupFlag(VehicleViewModel viewModel)
         {
             throw new NotImplementedException();
@@ -232,5 +241,7 @@ namespace GarageV2.Controllers
                 Wheels = _vehicle.Wheels
             };
         }
+
+
     }
 }

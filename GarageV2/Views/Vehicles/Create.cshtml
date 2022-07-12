@@ -4,12 +4,12 @@
 <h1>Create</h1>
 
 
-@if (Model is not null && !string.IsNullOrEmpty(Model.UserMessage))
+@if (ViewData["HeadLine"] is not null && ViewData["UserMessage"] is not null)
 {
    <partial name="_InfoPopup"></partial>
 }
 
-<partial name="_VehicleTypeSelector"></partial>
+<partial name="_VehicleTypeSelector" for="Model" vview-data="@ViewData["UserMessage"]"></partial>
 
 
 <h4>Vehicle</h4>
