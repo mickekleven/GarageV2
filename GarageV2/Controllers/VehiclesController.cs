@@ -105,32 +105,46 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
 
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["UserMessage"] = $"Någonting gick fel. kontrollera att obligatoriska värden är ifyllda";
+                return View();
+            }
+
+
+            if (vehicle.VehicleType.Contains("välj", StringComparison.OrdinalIgnoreCase))
+            {
+                ViewData["UserMessage"] = "Välj ett fordon i listan";
+                return View();
+            }
+
+
             if (id != vehicle.RegNr.ToUpper())
             {
                 ViewData["UserMessage"] = $"Registeringsnummer {id} saknas";
                 return View();
             }
 
-            if (ModelState.IsValid)
+
+            try
             {
-                try
-                {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleExists(vehicle.RegNr))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(vehicle);
+                await _context.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VehicleExists(vehicle.RegNr))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
             return View(vehicle);
         }
 
