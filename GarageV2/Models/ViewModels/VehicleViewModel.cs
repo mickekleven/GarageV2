@@ -16,6 +16,7 @@
         public string VehicleType { get; set; }
 
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm}")]
         [Display(Name = "Parkeringsdatum")]
         [DataType(DataType.Date)]
         public DateTime ArrivalTime { get; init; }
