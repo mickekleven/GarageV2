@@ -24,7 +24,9 @@ const postOptions = {
 // is refreshed for on the page and not the whole page. 
 const fetchData = function (vehicleValue) {
 
-    let url = addUrl + vehicleValue ;
+    let url = addUrl + vehicleValue;
+
+    console.log('Allan ' + url);
 
     try {
         const response = fetch(url, getOptions)
