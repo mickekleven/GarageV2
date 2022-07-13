@@ -72,7 +72,7 @@ namespace GarageV2.Controllers
 
             vehicle.ArrivalTime = DateTime.Now;
             _context.Add(vehicle);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
             return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
 
 
@@ -145,6 +145,7 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
+            //ToDo: Change to GetVehicleModel
             var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.RegNr == id);
             if (vehicle == null)
@@ -170,7 +171,7 @@ namespace GarageV2.Controllers
                 _context.Vehicles.Remove(vehicle);
             }
 
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
