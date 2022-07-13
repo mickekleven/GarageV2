@@ -106,8 +106,6 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
 
-            Console.WriteLine("GG");
-
             if (!ModelState.IsValid)
             {
                 ViewData["UserMessage"] = $"Någonting gick fel. kontrollera att obligatoriska värden är ifyllda";
