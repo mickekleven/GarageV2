@@ -106,6 +106,7 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
 
+            Console.WriteLine("GG");
 
             if (!ModelState.IsValid)
             {
@@ -121,7 +122,7 @@ namespace GarageV2.Controllers
             }
 
 
-            if (id != vehicle.RegNr.ToUpper())
+            if (id.ToUpper() != vehicle.RegNr.ToUpper())
             {
                 ViewData["UserMessage"] = $"Registeringsnummer {id} saknas";
                 return View();
@@ -132,8 +133,6 @@ namespace GarageV2.Controllers
 
 
             return RedirectToAction(nameof(Index));
-
-            return View(vehicle);
         }
 
         // GET: Vehicles/Delete/5
@@ -177,11 +176,11 @@ namespace GarageV2.Controllers
                                     _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
 
             var model = await vehicles.Select(e => new VehicleViewModel
-             {
-                 RegNr = e.RegNr.ToUpper(),
-                 VehicleType = e.VehicleType.ToUpper(),
-                 ArrivalTime = e.ArrivalTime
-             }).ToListAsync();
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime
+            }).ToListAsync();
 
             return View(nameof(Index), model);
 
