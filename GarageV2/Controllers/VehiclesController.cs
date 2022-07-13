@@ -156,7 +156,6 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            TicketViewModel Kvitto = new();
             if (_context.Vehicles == null)
             {
                 return Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
@@ -164,32 +163,11 @@ namespace GarageV2.Controllers
             var vehicle = await _context.Vehicles.FindAsync(id);
             if (vehicle != null)
             {
-
-
-
-                Kvitto.ArrivalTime = vehicle.ArrivalTime;
-                Kvitto.CheckOutTime = DateTime.Now;
-                Kvitto.RegNr = vehicle.RegNr;
-
-                Kvitto.Ptime = DateTime.Now - vehicle.ArrivalTime;
-                Kvitto.Price = (float)Kvitto.Ptime.TotalHours * 12;
-                Kvitto.Price = (float)Math.Round(Kvitto.Price, 2);
-                if (Kvitto.Price < 12) Kvitto.Price = 12;
-                // avgift = 12Kr/h
-
                 _context.Vehicles.Remove(vehicle);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(DeleteSucess), Kvitto);
-        }
-
-
-        public async Task<IActionResult> DeleteSucess(TicketViewModel kvitto)
-        {
-
-
-            return View(kvitto);
+            await SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> IndexFilter(string RegNr)
@@ -199,18 +177,16 @@ namespace GarageV2.Controllers
                                     _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
 
             var model = await vehicles.Select(e => new VehicleViewModel
-            {
-                RegNr = e.RegNr.ToUpper(),
-                VehicleType = e.VehicleType.ToUpper(),
-                ArrivalTime = e.ArrivalTime
-            }).ToListAsync();
+             {
+                 RegNr = e.RegNr.ToUpper(),
+                 VehicleType = e.VehicleType.ToUpper(),
+                 ArrivalTime = e.ArrivalTime
+             }).ToListAsync();
 
             return View(nameof(Index), model);
 
 
         }
-
-        // Changes
 
 
         private bool VehicleExists(string id)
@@ -224,22 +200,36 @@ namespace GarageV2.Controllers
             return Json(vehicleType);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Receit
-            (
-           TicketViewModel model
-            )
+        private async Task<IEnumerable<VehicleViewModel>> GetVehicles()
         {
-            ReceitViewModel Receit = new()
+            return await _context.Vehicles.Select(e => new VehicleViewModel
             {
-                Reg = model.RegNr,
-                Arrival = model.ArrivalTime,
-                CheckOut = model.CheckOutTime,
-                ParkTime = model.Ptime,
-                ParkingPrice = model.Price
-            };
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime,
+            }).ToListAsync();
+        }
 
-            return View(Receit);
+        private async Task<VehicleViewModel> GetVehicle(string id)
+        {
+            var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
+                i.RegNr.ToLower().Equals(id.ToLower()));
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new VehicleViewModel
+            {
+                ArrivalTime = result.ArrivalTime,
+                RegNr = result.RegNr,
+                VehicleType = result.VehicleType,
+                Model = result.Model,
+                Brand = result.Brand,
+                Color = result.Color,
+                Wheels = result.Wheels
+
+            };
         }
 
 
@@ -267,39 +257,6 @@ namespace GarageV2.Controllers
             {
                 throw;
             }
-        }
-
-
-        private async Task<VehicleViewModel> GetVehicle(string id)
-        {
-            var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
-                i.RegNr.ToLower().Equals(id.ToLower()));
-            if (result == null)
-            {
-                return null;
-            }
-
-            return new VehicleViewModel
-            {
-                ArrivalTime = result.ArrivalTime,
-                RegNr = result.RegNr,
-                VehicleType = result.VehicleType,
-                Model = result.Model,
-                Brand = result.Brand,
-                Color = result.Color,
-                Wheels = result.Wheels
-
-            };
-        }
-
-        private async Task<IEnumerable<VehicleViewModel>> GetVehicles()
-        {
-            return await _context.Vehicles.Select(e => new VehicleViewModel
-            {
-                RegNr = e.RegNr.ToUpper(),
-                VehicleType = e.VehicleType.ToUpper(),
-                ArrivalTime = e.ArrivalTime,
-            }).ToListAsync();
         }
     }
 }
