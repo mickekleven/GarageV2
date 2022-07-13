@@ -57,7 +57,7 @@ namespace GarageV2.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["HeadLine"] = "Meddelande";
-                ViewData["UserMessage"] = $"Fyll i/välj samtliga värden i formuläret";
+                ViewData["UserMessage"] = $"Välj fordonstyp i formuläret";
                 return View();
             }
 
