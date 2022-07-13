@@ -164,6 +164,24 @@ namespace GarageV2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> IndexFilter(string RegNr)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
+                                    _context.Vehicles :
+                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
+
+            var model = await vehicles.Select(e => new VehicleViewModel
+             {
+                 RegNr = e.RegNr.ToUpper(),
+                 VehicleType = e.VehicleType.ToUpper(),
+                 ArrivalTime = e.ArrivalTime
+             }).ToListAsync();
+
+            return View(nameof(Index), model);
+
+
+        }
+
 
         private bool VehicleExists(string id)
         {
