@@ -16,6 +16,7 @@
         public string VehicleType { get; set; }
 
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm}")]
         [Display(Name = "Parkeringsdatum")]
         [DataType(DataType.Date)]
         public DateTime ArrivalTime { get; init; }
@@ -38,7 +39,7 @@
         /// <summary>
         /// HeadLine
         /// </summary>
-        public string headLine { get; set; }
+        public string HeadLine { get; set; }
 
         /// <summary>
         /// Message shown to the parking user - CRUD operations

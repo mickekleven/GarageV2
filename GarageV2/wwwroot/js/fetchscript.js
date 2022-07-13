@@ -2,10 +2,10 @@
 // Script handles fetch and update of the DOM
 
 
+const addUrl = location.protocol + '//' + window.location.host + '/Vehicles/SetVehicleType?vehicleType=';
+
 const vehiElement = document.querySelector('#vehicletypeid')
 const formElement = document.querySelector('#formid');
-
-const addUrl = 'SetVehicleType?vehicleType=';
 
 const getOptions = {
     'method': 'GET',
@@ -24,7 +24,9 @@ const postOptions = {
 // is refreshed for on the page and not the whole page. 
 const fetchData = function (vehicleValue) {
 
-    let url = addUrl + vehicleValue ;
+    let url = addUrl + vehicleValue;
+
+    console.log('Allan ' + url);
 
     try {
         const response = fetch(url, getOptions)
