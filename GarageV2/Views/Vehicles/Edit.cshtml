@@ -7,7 +7,7 @@
 
 @if (ViewData["UserMessage"] is not null)
 {
-   <partial name="_InfoPopup"></partial>
+   <partial name="_InfoPopup" view-data="@ViewData["UserMessage"] as ViewDataDictionary"></partial>
 }
 
 <h1>Edit</h1>

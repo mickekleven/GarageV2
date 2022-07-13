@@ -3,13 +3,11 @@
 
 <h1>Parkera ditt fordon</h1>
 
-@{ 
-    ViewData["UserMessage"] = "";
-}
+
 
 @if (ViewData["HeadLine"] is not null && ViewData["UserMessage"] is not null)
 {
-   <partial name="_InfoPopup"></partial>
+   <partial name="_InfoPopup" view-data="@ViewData["UserMessage"] as ViewDataDictionary"></partial>
 }
 
 <partial name="_VehicleTypeSelector" for="@Model"></partial>

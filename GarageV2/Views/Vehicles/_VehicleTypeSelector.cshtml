@@ -11,16 +11,22 @@
 
         @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
         {
-            if (ty!.ToString().Equals(Model.VehicleType.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                <option selected class="vihtype" value="@ty">@ty</option>
-            }
-            else
+
+            if (Model is null)
             {
                 <option class="vihtype" value="@ty">@ty</option>
             }
-
-
+            else
+            {
+                if (ty!.ToString().Equals(Model.VehicleType.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    <option selected class="vihtype" value="@ty">@ty</option>
+                }
+                else
+                {
+                    <option class="vihtype" value="@ty">@ty</option>
+                }
+            }
         }
     </select>
 
