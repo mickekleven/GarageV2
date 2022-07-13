@@ -1,0 +1,21 @@
+﻿@model GarageV2.Models.ViewModels.ReceitViewModel
+
+@{
+    ViewData["Title"] = "Receit";
+}
+<h1>Kvitto på betald parkering</h1>
+<h2>För: @Html.DisplayFor(model=>model.Reg)</h2>
+<h4>Avgift per timme : 12Kr</h4>
+<h4>Minimiavgift : 12Kr</h4>
+<p>Ankom:</p>
+@Html.DisplayFor(model => model.Arrival)
+<p>Utcheckad</p>
+@Html.DisplayFor(model => model.CheckOut)
+<p>Parkeringens längd</p>
+@Html.DisplayFor(model => model.ParkTime) (dygn.tim:min)
+<p>Pris</p>
+@Html.DisplayFor(model => model.ParkingPrice) Kr
+<h3>Välkommen åter!</h3>
+<a asp-action="Index">Tilbaka till parkeringen</a>
+
+
