@@ -1,0 +1,38 @@
+﻿.anim-main {
+    height: 0;
+    width: 100%;
+    animation-name: kf_from_b_t;
+    animation-duration: 2000ms;
+    animation-fill-mode: both;
+    overflow: hidden;
+    transition-timing-function: ease-in;
+}
+
+
+@keyframes kf_from_b_t {
+
+    0% {
+        transform: rotate(10deg);
+        perspective: 100px;
+        height: 0;
+    }
+
+    100% {
+        transform: rotate(0deg);
+        perspective: 0;
+        height: 500px;
+    }
+}
+
+@keyframes kf_fadein {
+    0% {
+        opacity: 0;
+        transform: rotate(45deg);
+    }
+
+    0% {
+        color: red;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
