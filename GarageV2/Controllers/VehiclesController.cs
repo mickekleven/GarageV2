@@ -132,9 +132,6 @@ namespace GarageV2.Controllers
                 _context.Update(vehicle);
                 await _context.SaveChangesAsync();
                 ViewData["UserMessage"] = $"Din {vehicle.Brand} med regnr {id} är uppdaterad";
-
-
-
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -245,24 +242,10 @@ namespace GarageV2.Controllers
 
 
 
-        public IActionResult setPopupFlag(VehicleViewModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
 
 
-        private VehicleViewModel CastItem(Vehicle _vehicle)
-        {
-            return new VehicleViewModel
-            {
-                Brand = _vehicle.Brand,
-                Color = _vehicle.Color,
-                Model = _vehicle.Model,
-                RegNr = _vehicle.RegNr,
-                VehicleType = _vehicle.VehicleType,
-                Wheels = _vehicle.Wheels
-            };
-        }
+
+
 
 
     }
