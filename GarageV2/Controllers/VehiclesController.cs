@@ -105,13 +105,10 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
 
-            ViewData["UserMessage"] = $"Popup test";
-            return View();
-
-
             if (id != vehicle.RegNr.ToUpper())
             {
-                return NotFound();
+                ViewData["UserMessage"] = $"Registeringsnummer {id} saknas";
+                return View();
             }
 
             if (ModelState.IsValid)
