@@ -15,29 +15,9 @@ namespace GarageV2.Controllers
             _context = context;
         }
 
-        // GET: Vehicles
-        //public async Task<IActionResult> Index()
-        //{
-        //      return _context.Vehicles != null ? 
-        //                  View(await _context.Vehicles.ToListAsync()) :
-        //                  Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-        //}
-
-
-
-
         public async Task<IActionResult> Index()
         {
-            //return _context.Vehicles != null ?
-            //            View(await _context.Vehicles.ToListAsync()) :
-            //            Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-            var viewModel = await _context.Vehicles.Select(e => new IndexViewModel
-            {
-                RegNr = e.RegNr.ToUpper(),
-                VehicleType = e.VehicleType.ToUpper(),
-                ArrivalTime = e.ArrivalTime
-            }).ToListAsync();
-
+            var viewModel = await GetVehicles().ConfigureAwait(false);
             return View(viewModel);
         }
 
@@ -50,8 +30,9 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.RegNr == id);
+
+
+            var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
                 return NotFound();
@@ -61,7 +42,7 @@ namespace GarageV2.Controllers
         }
 
         // GET: Vehicles/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -73,14 +54,29 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RegNr,Color,Wheels,Brand,Model,VehicleType")] Vehicle vehicle)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                vehicle.ArrivalTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["HeadLine"] = "Meddelande";
+                ViewData["UserMessage"] = $"Välj fordonstyp i formuläret";
+                return View();
             }
-            return View(vehicle);
+
+
+            var isExist = await GetVehicle(vehicle.RegNr);
+            if (isExist is not null)
+            {
+                ViewData["HeadLine"] = "Meddelande";
+                ViewData["UserMessage"] = $"Angivet registeringsnummer {vehicle.RegNr} existerar redan vilket måste vara unikt";
+                return View();
+            }
+
+            vehicle.ArrivalTime = DateTime.Now;
+            vehicle.RegNr = vehicle.RegNr.ToUpper();
+            _context.Add(vehicle);
+            await SaveChangesAsync();
+            return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
+
+
         }
 
         // GET: Vehicles/Edit/5
@@ -88,14 +84,17 @@ namespace GarageV2.Controllers
         {
             if (id == null || _context.Vehicles == null)
             {
+                ViewData["UserMessage"] = $"Regnummer {id} saknas";
+
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await GetVehicleModel(id);
             if (vehicle == null)
             {
                 return NotFound();
             }
+
             return View(vehicle);
         }
 
@@ -104,33 +103,36 @@ namespace GarageV2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
-            if (id != vehicle.RegNr)
+
+
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                ViewData["UserMessage"] = $"Någonting gick fel. kontrollera att obligatoriska värden är ifyllda";
+                return View();
             }
 
-            if (ModelState.IsValid)
+
+            if (vehicle.VehicleType.Contains("välj", StringComparison.OrdinalIgnoreCase))
             {
-                try
-                {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleExists(vehicle.RegNr))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["UserMessage"] = "Välj ett fordon i listan";
+                return View();
             }
+
+
+            if (id != vehicle.RegNr.ToUpper())
+            {
+                ViewData["UserMessage"] = $"Registeringsnummer {id} saknas";
+                return View();
+            }
+
+            _context.Update(vehicle);
+            await SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+
             return View(vehicle);
         }
 
@@ -142,12 +144,9 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.RegNr == id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
+
+            var vehicle = await GetVehicleModel(id);
+            if (vehicle == null) { return NotFound(); }
 
             return View(vehicle);
         }
@@ -193,6 +192,24 @@ namespace GarageV2.Controllers
             return View(kvitto);
         }
 
+        public async Task<IActionResult> IndexFilter(string RegNr)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
+                                    _context.Vehicles :
+                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
+
+            var model = await vehicles.Select(e => new VehicleViewModel
+             {
+                 RegNr = e.RegNr.ToUpper(),
+                 VehicleType = e.VehicleType.ToUpper(),
+                 ArrivalTime = e.ArrivalTime
+             }).ToListAsync();
+
+            return View(nameof(Index), model);
+
+
+        }
+
 
 
         private bool VehicleExists(string id)
@@ -225,9 +242,30 @@ namespace GarageV2.Controllers
         }
 
 
+        /// <summary>
+        /// Gets Vehicle pure viehicle model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<Vehicle?> GetVehicleModel(string id) =>
+                            await _context.Vehicles.FirstOrDefaultAsync(i =>
+                                    i.RegNr.ToLower().Equals(id.ToLower()));
 
 
-
-
+        /// <summary>
+        /// Save DB changes
+        /// </summary>
+        /// <returns></returns>
+        private async Task SaveChangesAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
     }
 }

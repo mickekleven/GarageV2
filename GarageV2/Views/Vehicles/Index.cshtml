@@ -1,5 +1,5 @@
 ﻿@using GarageV2.Models.ViewModels
-@model IEnumerable<IndexViewModel>
+@model IEnumerable<VehicleViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,9 +7,23 @@
 
 <h1>Parkerade Fordon</h1>
 
+
+
 <p>
     <a asp-action="Create">Parkera nytt fordon</a>
 </p>
+<form asp-action="IndexFilter" asp-controller="Vehicles" method="get">
+    <div class="input-group mb-2">        
+        <div class="input-group-append">
+            <input type="text" class="form-control" name="RegNr" placeholder="Skriv register numer" />
+        </div>
+        
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search">Sök</i></button>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
