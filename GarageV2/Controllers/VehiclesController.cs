@@ -100,9 +100,9 @@ namespace GarageV2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime, VehicleType")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
-            if (id != vehicle.RegNr)
+            if (id != vehicle.RegNr.ToUpper())
             {
                 return NotFound();
             }
