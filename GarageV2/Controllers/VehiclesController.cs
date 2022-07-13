@@ -126,24 +126,12 @@ namespace GarageV2.Controllers
                 return View();
             }
 
+            _context.Update(vehicle);
+            await SaveChangesAsync();
+            ViewData["UserMessage"] = $"Din {vehicle.Brand} med regnr {id} är uppdaterad";
 
-            try
-            {
-                _context.Update(vehicle);
-                await _context.SaveChangesAsync();
-                ViewData["UserMessage"] = $"Din {vehicle.Brand} med regnr {id} är uppdaterad";
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VehicleExists(vehicle.RegNr))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+
             return RedirectToAction(nameof(Index));
 
             return View(vehicle);
@@ -241,12 +229,20 @@ namespace GarageV2.Controllers
                                     i.RegNr.ToLower().Equals(id.ToLower()));
 
 
-
-
-
-
-
-
-
+        /// <summary>
+        /// Save DB changes
+        /// </summary>
+        /// <returns></returns>
+        private async Task SaveChangesAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
     }
 }
