@@ -131,6 +131,10 @@ namespace GarageV2.Controllers
             {
                 _context.Update(vehicle);
                 await _context.SaveChangesAsync();
+                ViewData["UserMessage"] = $"Din {vehicle.Brand} med regnr {id} är uppdaterad";
+
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
