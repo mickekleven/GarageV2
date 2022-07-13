@@ -30,8 +30,6 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-
-
             var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
@@ -68,6 +66,9 @@ namespace GarageV2.Controllers
             }
 
             vehicle.ArrivalTime = DateTime.Now;
+            vehicle.RegNr = vehicle.RegNr.ToUpper();
+
+
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
