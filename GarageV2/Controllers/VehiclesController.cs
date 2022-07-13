@@ -268,5 +268,38 @@ namespace GarageV2.Controllers
                 throw;
             }
         }
+
+
+        private async Task<VehicleViewModel> GetVehicle(string id)
+        {
+            var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
+                i.RegNr.ToLower().Equals(id.ToLower()));
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new VehicleViewModel
+            {
+                ArrivalTime = result.ArrivalTime,
+                RegNr = result.RegNr,
+                VehicleType = result.VehicleType,
+                Model = result.Model,
+                Brand = result.Brand,
+                Color = result.Color,
+                Wheels = result.Wheels
+
+            };
+        }
+
+        private async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        {
+            return await _context.Vehicles.Select(e => new VehicleViewModel
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime,
+            }).ToListAsync();
+        }
     }
 }
