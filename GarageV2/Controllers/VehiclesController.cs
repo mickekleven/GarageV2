@@ -177,17 +177,18 @@ namespace GarageV2.Controllers
                                     _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
 
             var model = await vehicles.Select(e => new VehicleViewModel
-             {
-                 RegNr = e.RegNr.ToUpper(),
-                 VehicleType = e.VehicleType.ToUpper(),
-                 ArrivalTime = e.ArrivalTime
-             }).ToListAsync();
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime
+            }).ToListAsync();
 
             return View(nameof(Index), model);
 
 
         }
 
+        // Changes
 
         private bool VehicleExists(string id)
         {
