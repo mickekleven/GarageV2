@@ -20,7 +20,7 @@
     100% {
         transform: rotate(0deg);
         perspective: 0;
-        height: 500px;
+        height: 300px;
     }
 }
 
