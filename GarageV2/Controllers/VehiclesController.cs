@@ -67,7 +67,10 @@ namespace GarageV2.Controllers
 
             vehicle.ArrivalTime = DateTime.Now;
             vehicle.RegNr = vehicle.RegNr.ToUpper();
-
+            vehicle.Color = vehicle.Color.ToLower().Replace("blue", "Blå").Replace("red", "Röd").Replace("green", "Grön").Replace("magenta", "Magenta").Replace("pink", "Råsa")
+                .Replace("yellow", "Gul").Replace("black", "Svart").Replace("brown", "Brown").Replace("white", "Vit").Replace("grey", "Grå").Replace("gold", "Guld")
+                .Replace("silver", "Silver").Replace("orange", "Orange").Replace("violet", "Violett").Replace("lime", "Lime")
+                .Replace("rust", "Rost").Replace("none", "Ingen").Replace("light", "Ljus").Replace("dark", "Mörk");
 
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
