@@ -5,7 +5,7 @@
 
 
 
-@if (ViewData["HeadLine"] is not null && ViewData["UserMessage"] is not null)
+@if (ViewData["UserMessage"] is not null)
 {
    <partial name="_InfoPopup" view-data="@ViewData["UserMessage"] as ViewDataDictionary"></partial>
 }

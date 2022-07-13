@@ -104,6 +104,11 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
+
+            ViewData["UserMessage"] = $"Popup test";
+            return View();
+
+
             if (id != vehicle.RegNr.ToUpper())
             {
                 return NotFound();
