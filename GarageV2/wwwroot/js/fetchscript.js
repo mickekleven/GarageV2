@@ -2,10 +2,10 @@
 // Script handles fetch and update of the DOM
 
 
+const addUrl = location.protocol + '//' + window.location.host + '/Vehicles/SetVehicleType?vehicleType=';
+
 const vehiElement = document.querySelector('#vehicletypeid')
 const formElement = document.querySelector('#formid');
-
-const addUrl = 'SetVehicleType?vehicleType=';
 
 const getOptions = {
     'method': 'GET',
