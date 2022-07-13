@@ -145,13 +145,9 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-            //ToDo: Change to GetVehicleModel
-            var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.RegNr == id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
+
+            var vehicle = await GetVehicleModel(id);
+            if (vehicle == null) { return NotFound(); }
 
             return View(vehicle);
         }
