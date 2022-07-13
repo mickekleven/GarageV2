@@ -7,9 +7,14 @@
 
 <h1>Parkerade Fordon</h1>
 
+
+
 <p>
     <a asp-action="Create">Parkera nytt fordon</a>
 </p>
+
+<p>Allokerade platser: @Model.Count()</p>
+
 <table class="table">
     <thead>
         <tr>
