@@ -71,6 +71,7 @@ namespace GarageV2.Controllers
             }
 
             vehicle.ArrivalTime = DateTime.Now;
+            vehicle.RegNr = vehicle.RegNr.ToUpper();
             _context.Add(vehicle);
             await SaveChangesAsync();
             return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
@@ -128,8 +129,6 @@ namespace GarageV2.Controllers
 
             _context.Update(vehicle);
             await SaveChangesAsync();
-            ViewData["UserMessage"] = $"Din {vehicle.Brand} med regnr {id} är uppdaterad";
-
 
 
             return RedirectToAction(nameof(Index));
