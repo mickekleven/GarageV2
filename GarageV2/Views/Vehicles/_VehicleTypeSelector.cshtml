@@ -3,13 +3,24 @@
 @using static GarageV2.Utilities.Enums
 
 
+
+
 <div class="col-md-4">
 
     <select class="form-select form-select-sm" name="selectedValue" onchange="fetchData(this.value);">
 
         @foreach (var ty in Enum.GetValues(typeof(VehicleType)))
         {
-            <option class="vihtype" value="@ty">@ty</option>
+            if (ty!.ToString().Equals(Model.VehicleType.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                <option selected class="vihtype" value="@ty">@ty</option>
+            }
+            else
+            {
+                <option class="vihtype" value="@ty">@ty</option>
+            }
+
+
         }
     </select>
 

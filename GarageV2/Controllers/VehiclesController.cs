@@ -83,6 +83,8 @@ namespace GarageV2.Controllers
         {
             if (id == null || _context.Vehicles == null)
             {
+                ViewData["UserMessage"] = $"Regnummer {id} saknas";
+
                 return NotFound();
             }
 
