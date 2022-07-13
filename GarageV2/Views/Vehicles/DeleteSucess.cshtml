@@ -1,0 +1,87 @@
+﻿@model GarageV2.Models.ViewModels.TicketViewModel
+
+@{
+    ViewData["Title"] = "EditSucess";
+}
+
+<h1>Sucess!</h1>
+
+<div>
+    <h4>Fordon Utcheckat</h4>
+    <hr />
+    <dl class="row">
+
+       <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.RegNr)
+       </dt>
+          <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.RegNr)
+          </dd>
+
+
+
+     
+        <dt class = "col-sm-4">
+          
+            @Html.DisplayNameFor(model => model.ArrivalTime)
+          </dt>
+          <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ArrivalTime)
+        </dd>
+
+        <dt class = "col-sm-4">
+        
+            @Html.DisplayNameFor(model => model.CheckOutTime)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.CheckOutTime)
+        </dd>
+
+
+
+      
+
+
+        <dt class = "col-sm-4">
+       
+            @Html.DisplayNameFor(model => model.Ptime) 
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Ptime) (dygn.tim:min)
+        </dd>
+
+
+
+
+        <dt class = "col-sm-4">
+       
+            @Html.DisplayNameFor(model => model.Price) 
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Price) Kr
+        </dd>
+
+
+
+
+
+
+    </dl>
+</div>
+<div>
+     <form asp-action="Receit"  >
+                        <input hidden asp-for="RegNr" />
+                        <input hidden type="datetime" asp-for="ArrivalTime" />
+                        <input hidden type="datetime"  asp-for="CheckOutTime" />
+                        <input hidden asp-for="Ptime" />
+                        <input hidden asp-for="Price" />
+                        
+                        <button  type="submit"  class="btn btn-primary">Skriv ut kvitto</button>
+                    </form>
+  
+
+    
+    <a asp-action="Index">Tillbaka till Garaget</a>
+</div>
+
+

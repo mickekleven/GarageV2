@@ -157,6 +157,7 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            TicketViewModel Kvitto = new();
             if (_context.Vehicles == null)
             {
                 return Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
@@ -164,12 +165,34 @@ namespace GarageV2.Controllers
             var vehicle = await _context.Vehicles.FindAsync(id);
             if (vehicle != null)
             {
+
+
+
+                Kvitto.ArrivalTime = vehicle.ArrivalTime;
+                Kvitto.CheckOutTime = DateTime.Now;
+                Kvitto.RegNr = vehicle.RegNr;
+
+                Kvitto.Ptime = DateTime.Now - vehicle.ArrivalTime;
+                Kvitto.Price = (float)Kvitto.Ptime.TotalHours * 12;
+                Kvitto.Price = (float)Math.Round(Kvitto.Price, 2);
+                if (Kvitto.Price < 12) Kvitto.Price = 12;
+                // avgift = 12Kr/h
+
                 _context.Vehicles.Remove(vehicle);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(DeleteSucess), Kvitto);
         }
+
+
+        public async Task<IActionResult> DeleteSucess(TicketViewModel kvitto)
+        {
+
+
+            return View(kvitto);
+        }
+
 
 
         private bool VehicleExists(string id)
@@ -182,6 +205,29 @@ namespace GarageV2.Controllers
         {
             return Json(vehicleType);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Receit
+            (
+           TicketViewModel model
+            )
+        {
+            ReceitViewModel Receit = new()
+            {
+                Reg = model.RegNr,
+                Arrival = model.ArrivalTime,
+                CheckOut = model.CheckOutTime,
+                ParkTime = model.Ptime,
+                ParkingPrice = model.Price
+            };
+
+            return View(Receit);
+        }
+
+
+
+
+
 
     }
 }
