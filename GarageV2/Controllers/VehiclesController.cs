@@ -30,8 +30,6 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-
-
             var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
@@ -72,6 +70,11 @@ namespace GarageV2.Controllers
 
             vehicle.ArrivalTime = DateTime.Now;
             vehicle.RegNr = vehicle.RegNr.ToUpper();
+            vehicle.Color = vehicle.Color.ToLower().Replace("blue", "Blå").Replace("red", "Röd").Replace("green", "Grön").Replace("magenta", "Magenta").Replace("pink", "Råsa")
+                .Replace("yellow", "Gul").Replace("black", "Svart").Replace("brown", "Brown").Replace("white", "Vit").Replace("grey", "Grå").Replace("gold", "Guld")
+                .Replace("silver", "Silver").Replace("orange", "Orange").Replace("violet", "Violett").Replace("lime", "Lime")
+                .Replace("rust", "Rost").Replace("none", "Ingen").Replace("light", "Ljus").Replace("dark", "Mörk");
+
             _context.Add(vehicle);
             await SaveChangesAsync();
             return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
@@ -105,8 +108,6 @@ namespace GarageV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
-
-            Console.WriteLine("GG");
 
             if (!ModelState.IsValid)
             {
@@ -150,24 +151,6 @@ namespace GarageV2.Controllers
             return View(vehicle);
         }
 
-        // POST: Vehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.Vehicles == null)
-            {
-                return Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
-            }
-            var vehicle = await _context.Vehicles.FindAsync(id);
-            if (vehicle != null)
-            {
-                _context.Vehicles.Remove(vehicle);
-            }
-
-            await SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         public async Task<IActionResult> IndexFilter(string RegNr)
         {
@@ -186,6 +169,69 @@ namespace GarageV2.Controllers
 
 
         }
+
+
+
+        // POST: Vehicles/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            TicketViewModel Kvitto = new();
+            if (_context.Vehicles == null)
+            {
+                return Problem("Entity set 'GarageDBContext.Vehicles'  is null.");
+            }
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle != null)
+            {
+
+
+
+                Kvitto.ArrivalTime = vehicle.ArrivalTime;
+                Kvitto.CheckOutTime = DateTime.Now;
+                Kvitto.RegNr = vehicle.RegNr;
+
+                Kvitto.Ptime = DateTime.Now - vehicle.ArrivalTime;
+                Kvitto.Price = (float)Kvitto.Ptime.TotalHours * 12;
+                Kvitto.Price = (float)Math.Round(Kvitto.Price, 2);
+                if (Kvitto.Price < 12) Kvitto.Price = 12;
+                // avgift = 12Kr/h
+
+                _context.Vehicles.Remove(vehicle);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(DeleteSucess), Kvitto);
+        }
+
+
+        public async Task<IActionResult> DeleteSucess(TicketViewModel kvitto)
+        {
+
+
+            return View(kvitto);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Receit
+            (
+           TicketViewModel model
+            )
+        {
+            ReceitViewModel Receit = new()
+            {
+                Reg = model.RegNr,
+                Arrival = model.ArrivalTime,
+                CheckOut = model.CheckOutTime,
+                ParkTime = model.Ptime,
+                ParkingPrice = model.Price
+            };
+
+            return View(Receit);
+        }
+
 
 
         private bool VehicleExists(string id)
