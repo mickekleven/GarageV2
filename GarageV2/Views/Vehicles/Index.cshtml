@@ -3,9 +3,21 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var dict = new Dictionary<string, string>();
+    dict.Add("HeadLine", "Garage teamet AB");
+    dict.Add("Content", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla aliquet enim tortor at. Ultrices eros in cursus turpis massa tincidunt dui ut.");
+    dict.Add("subtitle", "Vi har öppet 24/7 året runt");
+    dict.Add("Content-2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla aliquet enim tortor at. Ultrices eros in cursus turpis massa tincidunt dui ut.");
+
 }
 
-<h1>Parkerade Fordon</h1>
+
+<partial name="_AnimProjector" model="dict"></partial>
+
+
+
+<h1 class="text-muted">Parkerade Fordon</h1>
 
 
 
