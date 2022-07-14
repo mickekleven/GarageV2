@@ -11,53 +11,53 @@
     <hr />
     <dl class="row">
 
-       <dt class = "col-sm-4">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.RegNr)
-       </dt>
-          <dd class = "col-sm-8">
+        </dt>
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.RegNr)
-          </dd>
+        </dd>
 
 
 
-     
-        <dt class = "col-sm-4">
-          
+
+        <dt class="col-sm-4">
+
             @Html.DisplayNameFor(model => model.ArrivalTime)
-          </dt>
-          <dd class = "col-sm-8">
+        </dt>
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.ArrivalTime)
         </dd>
 
-        <dt class = "col-sm-4">
-        
+        <dt class="col-sm-4">
+
             @Html.DisplayNameFor(model => model.CheckOutTime)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.CheckOutTime)
         </dd>
 
 
 
-      
 
 
-        <dt class = "col-sm-4">
-       
-            @Html.DisplayNameFor(model => model.Ptime) 
+
+        <dt class="col-sm-4">
+
+            @Html.DisplayNameFor(model => model.Ptime)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Ptime) (dygn.tim:min)
         </dd>
 
 
 
 
-        <dt class = "col-sm-4">
-       
-            @Html.DisplayNameFor(model => model.Price) 
+        <dt class="col-sm-4">
+
+            @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Price) Kr
         </dd>
 
@@ -69,19 +69,29 @@
     </dl>
 </div>
 <div>
-     <form asp-action="Receit"  >
-                        <input hidden asp-for="RegNr" />
-                        <input hidden type="datetime" asp-for="ArrivalTime" />
-                        <input hidden type="datetime"  asp-for="CheckOutTime" />
-                        <input hidden asp-for="Ptime" />
-                        <input hidden asp-for="Price" />
-                        
-                        <button  type="submit"  class="btn btn-primary">Skriv ut kvitto</button>
-                    </form>
-  
 
-    
-    <a asp-action="Index">Tillbaka till Garaget</a>
+
+    <div class="col-md-12">
+        <form asp-action="Receit">
+            <input hidden asp-for="RegNr" />
+            <input hidden type="datetime" asp-for="ArrivalTime" />
+            <input hidden type="datetime" asp-for="CheckOutTime" />
+            <input hidden asp-for="Ptime" />
+            <input hidden asp-for="Price" />
+
+            <button type="submit" class="btn btn-primary">Skriv ut kvitto</button>
+        </form>
+    </div>
+
+
+
+
+
+    <div class="col-md-12">
+        <a asp-action="Index">Tillbaka till Garaget</a>
+    </div>
+
+
 </div>
 
 

@@ -10,11 +10,11 @@
                 <div class="popup-inner">
                     <div class="popup-body bg-light">
 
-                        <h2>INFORMATION @DateTime.Now.ToString("hh:mm")</h2>
+                        <h2 class="text-primary">INFORMATION @DateTime.Now.ToString("hh:mm")</h2>
 
                         @if (ViewData["UserMessage"] is not null)
                         {
-                            <p>@ViewData["UserMessage"]</p>
+                            <p class="text-primary">@ViewData["UserMessage"]</p>
                         }
 
                     </div>

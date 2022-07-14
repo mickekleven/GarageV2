@@ -30,8 +30,6 @@ namespace GarageV2.Controllers
                 return NotFound();
             }
 
-
-
             var vehicle = await GetVehicle(id);
             if (vehicle == null)
             {
@@ -72,6 +70,11 @@ namespace GarageV2.Controllers
 
             vehicle.ArrivalTime = DateTime.Now;
             vehicle.RegNr = vehicle.RegNr.ToUpper();
+            vehicle.Color = vehicle.Color.ToLower().Replace("blue", "Blå").Replace("red", "Röd").Replace("green", "Grön").Replace("magenta", "Magenta").Replace("pink", "Råsa")
+                .Replace("yellow", "Gul").Replace("black", "Svart").Replace("brown", "Brown").Replace("white", "Vit").Replace("grey", "Grå").Replace("gold", "Guld")
+                .Replace("silver", "Silver").Replace("orange", "Orange").Replace("violet", "Violett").Replace("lime", "Lime")
+                .Replace("rust", "Rost").Replace("none", "Ingen").Replace("light", "Ljus").Replace("dark", "Mörk");
+
             _context.Add(vehicle);
             await SaveChangesAsync();
             return RedirectToAction(nameof(Details), this.ControllerContext.RouteData.Values["controller"].ToString(), new { id = vehicle.RegNr });
@@ -106,7 +109,6 @@ namespace GarageV2.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("RegNr,Color,Wheels,Brand,Model,ArrivalTime,VehicleType")] Vehicle vehicle)
         {
 
-
             if (!ModelState.IsValid)
             {
                 ViewData["UserMessage"] = $"Någonting gick fel. kontrollera att obligatoriska värden är ifyllda";
@@ -121,7 +123,7 @@ namespace GarageV2.Controllers
             }
 
 
-            if (id != vehicle.RegNr.ToUpper())
+            if (id.ToUpper() != vehicle.RegNr.ToUpper())
             {
                 ViewData["UserMessage"] = $"Registeringsnummer {id} saknas";
                 return View();
@@ -132,8 +134,6 @@ namespace GarageV2.Controllers
 
 
             return RedirectToAction(nameof(Index));
-
-            return View(vehicle);
         }
 
         // GET: Vehicles/Delete/5
@@ -150,6 +150,27 @@ namespace GarageV2.Controllers
 
             return View(vehicle);
         }
+
+
+        public async Task<IActionResult> IndexFilter(string RegNr)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
+                                    _context.Vehicles :
+                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
+
+            var model = await vehicles.Select(e => new VehicleViewModel
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime
+            }).ToListAsync();
+
+            return View(nameof(Index), model);
+
+
+        }
+
+
 
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -193,36 +214,6 @@ namespace GarageV2.Controllers
             return View(kvitto);
         }
 
-        public async Task<IActionResult> IndexFilter(string RegNr)
-        {
-            var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
-                                    _context.Vehicles :
-                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
-
-            var model = await vehicles.Select(e => new VehicleViewModel
-             {
-                 RegNr = e.RegNr.ToUpper(),
-                 VehicleType = e.VehicleType.ToUpper(),
-                 ArrivalTime = e.ArrivalTime
-             }).ToListAsync();
-
-            return View(nameof(Index), model);
-
-
-        }
-
-
-
-        private bool VehicleExists(string id)
-        {
-            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> SetVehicleType(string vehicleType)
-        {
-            return Json(vehicleType);
-        }
 
         [HttpPost]
         public async Task<IActionResult> Receit
@@ -240,6 +231,51 @@ namespace GarageV2.Controllers
             };
 
             return View(Receit);
+        }
+
+
+
+        private bool VehicleExists(string id)
+        {
+            return (_context.Vehicles?.Any(e => e.RegNr == id)).GetValueOrDefault();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SetVehicleType(string vehicleType)
+        {
+            return Json(vehicleType);
+        }
+
+        private async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        {
+            return await _context.Vehicles.Select(e => new VehicleViewModel
+            {
+                RegNr = e.RegNr.ToUpper(),
+                VehicleType = e.VehicleType.ToUpper(),
+                ArrivalTime = e.ArrivalTime,
+            }).ToListAsync();
+        }
+
+        private async Task<VehicleViewModel> GetVehicle(string id)
+        {
+            var result = await _context!.Vehicles!.FirstOrDefaultAsync(i =>
+                i.RegNr.ToLower().Equals(id.ToLower()));
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new VehicleViewModel
+            {
+                ArrivalTime = result.ArrivalTime,
+                RegNr = result.RegNr,
+                VehicleType = result.VehicleType,
+                Model = result.Model,
+                Brand = result.Brand,
+                Color = result.Color,
+                Wheels = result.Wheels
+
+            };
         }
 
 
