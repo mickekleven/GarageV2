@@ -60,16 +60,17 @@ namespace GarageV2.Controllers
             }
 
 
-            var isExist = await GetVehicle(vehicle.RegNr);
+            var _regNr = vehicle.RegNr.TrimStart().TrimEnd();
+            var isExist = await GetVehicle(_regNr);
             if (isExist is not null)
             {
                 ViewData["HeadLine"] = "Meddelande";
-                ViewData["UserMessage"] = $"Angivet registeringsnummer {vehicle.RegNr} existerar redan vilket måste vara unikt";
+                ViewData["UserMessage"] = $"Angivet registeringsnummer {_regNr} existerar redan vilket måste vara unikt";
                 return View();
             }
 
             vehicle.ArrivalTime = DateTime.Now;
-            vehicle.RegNr = vehicle.RegNr.ToUpper();
+            vehicle.RegNr = _regNr.ToUpper();
             vehicle.Color = vehicle.Color.ToLower().Replace("blue", "Blå").Replace("red", "Röd").Replace("green", "Grön").Replace("magenta", "Magenta").Replace("pink", "Råsa")
                 .Replace("yellow", "Gul").Replace("black", "Svart").Replace("brown", "Brown").Replace("white", "Vit").Replace("grey", "Grå").Replace("gold", "Guld")
                 .Replace("silver", "Silver").Replace("orange", "Orange").Replace("violet", "Violett").Replace("lime", "Lime")
@@ -156,7 +157,7 @@ namespace GarageV2.Controllers
         {
             var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
                                     _context.Vehicles :
-                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
+                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.Contains(RegNr.ToLower()));
 
             var model = await vehicles.Select(e => new VehicleViewModel
             {
