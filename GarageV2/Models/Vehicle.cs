@@ -4,8 +4,10 @@
 public class Vehicle
 {
     [Key]
+    [Required]
     [StringLength(10)]
     [Display(Name = "Regnr")]
+    [RegularExpression(@"^[a-zA-Z-0-9 ]+$", ErrorMessage = "Endast siffror och text är tillåtet")]
     public string RegNr { get; set; }
 
     [Required]
