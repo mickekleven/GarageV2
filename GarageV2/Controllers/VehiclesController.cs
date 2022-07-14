@@ -60,7 +60,8 @@ namespace GarageV2.Controllers
             }
 
 
-            var _regNr = vehicle.RegNr.TrimStart().TrimEnd();
+            var _regNr = string.Concat(vehicle.RegNr.Where(c => !char.IsWhiteSpace(c)));
+
             var isExist = await GetVehicle(_regNr);
             if (isExist is not null)
             {
@@ -157,7 +158,7 @@ namespace GarageV2.Controllers
         {
             var vehicles = string.IsNullOrWhiteSpace(RegNr) ?
                                     _context.Vehicles :
-                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.Contains(RegNr.ToLower()));
+                                    _context.Vehicles.Where(m => m.RegNr.ToLower()!.StartsWith(RegNr.ToLower()));
 
             var model = await vehicles.Select(e => new VehicleViewModel
             {
