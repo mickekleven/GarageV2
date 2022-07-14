@@ -4,7 +4,7 @@
     public class TicketViewModel
     {
         [Display(Name = "Registrerings nummer")]
-        public String RegNr { get; set; }
+        public string RegNr { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm}")]
         [Display(Name = "Parkeringsdatum")]
