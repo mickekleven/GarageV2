@@ -166,7 +166,6 @@ namespace GarageV2.Controllers
             {
 
 
-
                 Kvitto.ArrivalTime = vehicle.ArrivalTime;
                 Kvitto.CheckOutTime = DateTime.Now;
                 Kvitto.RegNr = vehicle.RegNr;
@@ -177,11 +176,13 @@ namespace GarageV2.Controllers
                 if (Kvitto.Price < 12) Kvitto.Price = 12;
                 // avgift = 12Kr/h
 
+
+
                 _context.Vehicles.Remove(vehicle);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(DeleteSucess), Kvitto);
+            await SaveChangesAsync();
+            return RedirectToAction(nameof(DeleteSucess),Kvitto);
         }
 
 
@@ -267,5 +268,44 @@ namespace GarageV2.Controllers
                 throw;
             }
         }
+
+
+
+        public async Task<IActionResult> DeleteSucess(TicketViewModel kvitto)
+        {
+
+
+            return View(kvitto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Receit
+          (
+         TicketViewModel model
+          )
+        {
+            ReceitViewModel Receit = new()
+            {
+                Reg = model.RegNr,
+                Arrival = model.ArrivalTime,
+                CheckOut = model.CheckOutTime,
+                ParkTime = model.Ptime,
+                ParkingPrice = model.Price
+            };
+
+            return View(Receit);
+        }
+
+
+
     }
+
+
+
+
+
+
+
+
+
 }
